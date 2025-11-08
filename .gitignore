@@ -1,0 +1,10 @@
+.idea/
+.vscode/
+.cover/
+.DS_Store
+build/*
+release
+/vendor
+/.env.local
+*.log
+docker-compose.override.yml
