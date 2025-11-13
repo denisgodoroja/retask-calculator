@@ -4,43 +4,8 @@ services:
     build:
       context: .
       dockerfile: '.docker/app.Dockerfile'
-    depends_on:
-      flyway:
-        condition: service_completed_successfully
     environment:
-      DB_HOST: retask-db
-      DB_USER: myuser
-      DB_PASSWORD: myuserPwd
-      DB_DATABASE: testdb
       PORT: 8080
-
-  db:
-    container_name: retask-db
-    image: mariadb:10.6
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: myuser
-      MYSQL_PASSWORD: myuserPwd
-      MYSQL_DATABASE: testdb
-    volumes:
-      - 'database:/var/lib/mysql'
-    # Add a health check to determine when the database is ready to accept connections
-    healthcheck:
-      test: ["CMD-SHELL", "mariadb-admin ping -uuser -ppassword"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  flyway:
-    image: flyway/flyway
-    command: -configFiles=conf/flyway.conf info migrate
-    volumes:
-      - './sql:/flyway/sql'
-      - './flyway.conf:/flyway/conf/flyway.conf'
-    depends_on:
-      db:
-        condition: service_healthy
 
   ui:
     container_name: retask-ui
@@ -52,8 +17,5 @@ services:
     volumes:
       # Mount your local nginx.conf into the container
       - ./.docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      # Mount the ui/ directory to the web root
-      - './ui/:/usr/share/nginx/html'
-
-volumes:
-  database:
+      # Mount the public/ directory to the web root
+      - './public/:/usr/share/nginx/html'

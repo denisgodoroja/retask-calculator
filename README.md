@@ -6,7 +6,7 @@ A full-stack web application designed to manage configurable pack sizes and calc
 
 * **Pack Size Management:** defined available pack sizes (e.g., 250, 500, 1000) via a web interface.
 
-* **Order Calculator:** Input a required number of items to receive the optimal combination of packs.
+* **Packs Calculator:** Input a required number of items to receive the optimal combination of packs.
 
 * **Web Interface:** Clean, responsive UI built with Bootstrap and vanilla JavaScript.
 
@@ -124,11 +124,11 @@ Updates the list of available pack sizes.
   }
   ```
 
-### 3. Calculate Order
+### 3. Calculate packs
 
 Calculates the required packs for a given number of items.
 
-* **URL:** `/order`
+* **URL:** `/calculate`
 
 * **Method:** `POST`
 
