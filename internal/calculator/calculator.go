@@ -44,7 +44,18 @@ func Calculate(amount int, packSizes []int) map[int]int {
 	// Memoization cache to store optimal results for remaining amounts
 	memo := make(map[int]result)
 
+	// Optimization: If the amount is significantly larger than the largest pack,
+	// we can pre-fill some packs of the smallest size to reduce recursion depth.
+	prefill := 0
+	if amount >= 100*sortedSizes[0] {
+		prefill = int(amount/sortedSizes[0]) - 20
+		amount -= prefill * sortedSizes[0]
+	}
+
 	finalRes := solve(amount, sortedSizes, memo)
+	if prefill > 0 {
+		finalRes.packs[sortedSizes[0]] += prefill
+	}
 
 	return finalRes.packs
 }
