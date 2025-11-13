@@ -2,16 +2,19 @@ package webservice
 
 import (
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
-// NewRouter creates and configures a new http.ServeMux (router)
+// NewRouter creates and configures a new router.
 // It wires all application routes to their corresponding handler methods.
-func NewRouter(h *Handler) *http.ServeMux {
-	mux := http.NewServeMux()
+func NewRouter(h *Handler) http.Handler {
+	// Create a new router from gorilla/mux
+	router := mux.NewRouter()
 
-	mux.HandleFunc("/pack/get-sizes", h.HandleGetPackSizes)
-	mux.HandleFunc("/pack/set-sizes", h.HandleSetPackSizes)
-	mux.HandleFunc("/calculate", h.HandleCalculate)
+	router.HandleFunc("/pack/sizes", h.HandleGetPackSizes).Methods(http.MethodGet)
+	router.HandleFunc("/pack/sizes", h.HandleSetPackSizes).Methods(http.MethodPost)
+	router.HandleFunc("/calculate", h.HandleCalculate).Methods(http.MethodPost)
 
-	return mux
+	return router
 }
